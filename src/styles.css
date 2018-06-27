@@ -3,8 +3,14 @@
   text-align: center;
 }
 
-.panel {
+.flexrow {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.length {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
 }

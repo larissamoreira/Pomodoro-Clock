@@ -1,9 +1,9 @@
 import React from "react";
 
 export const Length = props => (
-  <div>
+  <div className="length">
     <h3 id={props.label}>{props.title}</h3>
-    <div className="panel">
+    <div className="flexrow">
       <button id={props.decrementId} onClick={props.decrement}>
         -
       </button>
