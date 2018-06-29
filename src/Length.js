@@ -7,7 +7,9 @@ export const Length = props => (
       <button id={props.decrementId} onClick={props.decrement}>
         -
       </button>
-      <h4 id={props.lengthId}>{props.length}</h4>
+
+      <h4 id={props.lengthId}>{props.length}:00</h4>
+
       <button id={props.incrementId} onClick={props.increment}>
         +
       </button>

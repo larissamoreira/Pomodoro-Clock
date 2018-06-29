@@ -11,40 +11,64 @@ class App extends React.Component {
     this.state = {
       break: null,
       session: null,
-      seconds: 0
+      seconds: 0,
+      counter: false,
+      time: 0
     };
   }
 
   componentDidMount() {
-    this.setState({ break: 5, session: 25 });
-    this.interval = setInterval(() => this.tick(), 1000);
+    this.setState({ break: 5, session: 25, time: 25 });
   }
 
   increment = e => {
     e.preventDefault();
-    e.target.id === "break-increment"
-      ? this.setState({ break: this.state.break + 1 })
-      : this.setState({ session: this.state.session + 1 });
+    e.target.id === "break-increment" ?
+      this.state.break === 60 ?
+        console.log('NO MORE!')
+        : this.setState({ break: this.state.break + 1 })
+      : this.setState({ session: this.state.session + 1, time: this.state.time + 1 });
   };
 
   decrement = e => {
     e.preventDefault();
-    e.target.id === "break-decrement"
-      ? this.setState({
-          break: this.state.break === 0 ? 0 : this.state.break - 1
+    e.target.id === "break-decrement" ?
+      this.state.break === 0 ? console.log('no more!') :
+        this.setState({
+          break: this.state.break - 1
         })
-      : this.setState({
-          session: this.state.session === 0 ? 0 : this.state.session - 1
+      : this.state.session === 0 ? console.log('no more!') :
+        this.setState({
+          session: this.state.session - 1,
+          time: this.state.time - 1
         });
   };
 
   tick = () => {
-    this.state.seconds === 0
-      ? this.setState({ seconds: 59, session: this.state.session - 1 })
-      : this.setState(prevState => ({
-          seconds: prevState.seconds - 1
-        }));
-  };
+    let duration = this.state.time * 60;
+    let timer = duration
+    this.interval = setInterval(() => {
+
+      this.setState({
+        time: parseInt(timer / 60, 10),
+        seconds: parseInt(timer % 60, 10)
+      })
+
+      if (--timer < 0) {
+        timer = duration;
+      }
+
+    }, 1000);
+  }
+
+  pause = () => {
+    clearInterval(this.interval)
+  }
+
+  stop = () => {
+    clearInterval(this.interval)
+    this.setState({ time: this.state.session, seconds: 0 })
+  }
 
   render() {
     return (
@@ -72,7 +96,10 @@ class App extends React.Component {
             decrement={this.decrement}
           />
         </div>
-        <Session session={this.state.session} seconds={this.state.seconds} />
+        <Session session={this.state.time} seconds={this.state.seconds} />
+        <button id="start" onClick={this.tick}>Start</button>
+        <button id="pause" onClick={this.pause}>Pause</button>
+        <button id="stop" onClick={this.stop}>Stop</button>
       </div>
     );
   }
